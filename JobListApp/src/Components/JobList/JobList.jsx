@@ -121,6 +121,7 @@ export default function JobList() {
         <SearchBar/>
         {/* loader untill api call completes */}
             {loading && <AiOutlineLoading3Quarters className={classes.loader} />}
+            {!loading&&filteredJobs.length==0 && <img src='/noItems.jpg' alt='NO ITEMS FOUND' style={{ width: "-webkit-fill-available" }} />}
             <div className={classes.alignMent}>
                 {/* we can also create separate component for the cards */}
                 {filteredJobs.map((job, index) => (
