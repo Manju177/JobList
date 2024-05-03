@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Typography, Container, Grid } from '@material-ui/core';
-import { useDispatch, useSelector } from 'react-redux';
+import {useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 
 
@@ -9,6 +9,12 @@ const JobDetails = () => {
   const { jdList } = useSelector((state) => state.SearchItems.payloadData)
   const navigate = useNavigate()
   const { id } = useParams()
+
+  useEffect(() => {
+    if(!jdList){
+      navigate('/')
+    }
+  }, [jdList])
 
   console.log('id', id)
 
@@ -28,8 +34,10 @@ const JobDetails = () => {
 //added dummy data which is not available in api
  return (
     <Container>
+      {jdList&&
+      <div>
       <Typography variant="h3" gutterBottom onClick={handleCLick} style={{cursor:'pointer'}} >
-        <img style={{ width: '10rem', height: "5rem" }} src={getCompanyDetails[0].logoUrl} alt='logo' />
+        <img style={{ width: '10rem', height: "5rem" }} src={getCompanyDetails[0]?.logoUrl} alt='logo' />
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={12} md={6}>
@@ -37,19 +45,19 @@ const JobDetails = () => {
             Overview
           </Typography>
           <Typography>
-            Company name: {getCompanyDetails[0].companyName} | HQ Location: {getCompanyDetails[0].location}
+            Company name: {getCompanyDetails[0]?.companyName} | HQ Location: {getCompanyDetails[0]?.location}
           </Typography>
           <Typography>
-            Role: {getCompanyDetails[0].jobRole.toUpperCase()}
+            Role: {getCompanyDetails[0]?.jobRole.toUpperCase()}
           </Typography>
           <Typography>
-            Salary: ${getCompanyDetails[0].minJdSalary ? `${getCompanyDetails[0].minJdSalary}-${getCompanyDetails[0].maxJdSalary}` : getCompanyDetails[0].maxJdSalary}
+            Salary: ${getCompanyDetails[0]?.minJdSalary ? `${getCompanyDetails[0]?.minJdSalary}-${getCompanyDetails[0]?.maxJdSalary}` : getCompanyDetails[0]?.maxJdSalary}
           </Typography>
           <Typography>
-            Experience:  {getCompanyDetails[0].minExp ? `${getCompanyDetails[0].minExp}-${getCompanyDetails[0].maxExp}` : getCompanyDetails[0].maxExp} years
+            Experience:  {getCompanyDetails[0]?.minExp ? `${getCompanyDetails[0]?.minExp}-${getCompanyDetails[0]?.maxExp}` : getCompanyDetails[0]?.maxExp} years
           </Typography>
           <Typography>
-            Location: {getCompanyDetails[0].location}
+            Location: {getCompanyDetails[0]?.location}
           </Typography>
           <Typography>
             Type: Full-time
@@ -69,7 +77,7 @@ const JobDetails = () => {
         About the role
       </Typography>
       <Typography>
-        {getCompanyDetails[0].jobDetailsFromCompany}
+        {getCompanyDetails[0]?.jobDetailsFromCompany}
       </Typography>
       <Typography variant="h6" gutterBottom>
         Responsibilities
@@ -83,7 +91,10 @@ const JobDetails = () => {
         <li>Manage security, external authentication, third-party security, and API authentication.</li>
         <li>Execute bug fixes for production, security vulnerabilities fixes, deployments in production, production outage analysis, and fixing.</li>
       </ul>
+      </div>
+      }
     </Container>
+  
   );
 };
 
