@@ -6,6 +6,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { Button } from '@material-ui/core';
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import SearchBar from './SearchBar';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -91,15 +92,15 @@ export default function JobList() {
         fetchJobs();
     }, []);
 
-
-
     console.log('jobs', jobs)
 
     return (
         <> 
+        <SearchBar/>
         {/* loader untill api call completes */}
             {loading && <AiOutlineLoading3Quarters className={classes.loader} />}
             <div className={classes.alignMent}>
+                {/* we can also create separate component for the cards */}
                 {jobs.map((job, index) => (
                     <Card key={index} className={classes.root}>
                         <CardHeader
