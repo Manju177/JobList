@@ -16,9 +16,9 @@ const JobDetails = () => {
     }
   }, [jdList])
 
-  console.log('id', id)
+  // console.log('id', id)
 
-  console.log('reduxstorejobs', jdList)
+  // console.log('reduxstorejobs', jdList)
 
   const handleCLick = () => {
     navigate('/')
@@ -30,7 +30,7 @@ const JobDetails = () => {
     )
   })
 
-  console.log('getCompanyDetails', getCompanyDetails)
+  // console.log('getCompanyDetails', getCompanyDetails)
 //added dummy data which is not available in api
  return (
     <Container>

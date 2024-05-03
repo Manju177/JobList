@@ -7,6 +7,7 @@ const initialState = {
   salary:'',
   expirence:'',
   locType:[],
+  company:'',
   payloadData:[]
 }
 
@@ -26,6 +27,9 @@ const SearchsSlice = createSlice({
     LocationTypes(state,action){
         state.locType=action.payload
     },
+    searchCompany(state,action){
+      state.company=action.payload
+    },
     apiData(state,action){
       state.payloadData=action.payload
 
@@ -34,6 +38,6 @@ const SearchsSlice = createSlice({
   }
 })
 
-export const { roleSearch, salarySearch,noOfExpirence,LocationTypes,apiData } = SearchsSlice.actions
+export const { roleSearch, salarySearch,noOfExpirence,LocationTypes,apiData,searchCompany } = SearchsSlice.actions
 
 export default SearchsSlice.reducer

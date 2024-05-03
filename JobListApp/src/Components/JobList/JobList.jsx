@@ -72,7 +72,7 @@ export default function JobList() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
-    console.log('roles', roles.locType)
+    console.log('roles', roles.company)
 
     //Api call
     useEffect(() => {
@@ -83,7 +83,7 @@ export default function JobList() {
                 myHeaders.append('Content-Type', 'application/json');
 
                 const raw = JSON.stringify({
-                    limit: 99,
+                    limit: 48,
                     offset: 0,
                 });
 
@@ -112,10 +112,11 @@ export default function JobList() {
         fetchJobs();
     }, []);
 
-    console.log('jobs', jobs)
-    const filteredJobs = (roles.role || roles.salary || roles.expirence || roles.locType.length !== 0)
+    // console.log('jobs', jobs)
+    const filteredJobs = (roles.company||roles.role || roles.salary || roles.expirence || roles.locType.length !== 0)
         ? jobs.filter(job => {
             return (
+                job.companyName?.toLowerCase().includes(roles.company.toLowerCase()) &&
                 job.jobRole?.toLowerCase().includes(roles.role.toLowerCase()) &&
                 (job.minJdSalary >= Number(roles.salary) && true)
                 &&
@@ -124,11 +125,11 @@ export default function JobList() {
         })
         : jobs;
 
-    console.log('jobs', filteredJobs)
+    // console.log('jobs', filteredJobs)
 
 
     const handleClick = (index) => {
-        console.log('index', index)
+        // console.log('index', index)
         navigate(`/jobDetail/${index}`);
     };
 

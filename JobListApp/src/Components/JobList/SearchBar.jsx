@@ -5,7 +5,7 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import { Box, Chip, FormControl, InputLabel } from '@material-ui/core';
-import { LocationTypes, noOfExpirence, roleSearch, salarySearch } from '../../Redux/SearchSlice';
+import { LocationTypes, noOfExpirence, roleSearch, salarySearch, searchCompany } from '../../Redux/SearchSlice';
 import { useDispatch } from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
@@ -56,11 +56,12 @@ const MenuProps = {
 export default function SearchBar({ onSearch }) {
   const classes = useStyles();
   const [searchTerm, setSearchTerm] = useState('');
+  const [searchComapanyTerm, setSearchComapanyTerm] = useState('');
   const [selectedValue, setSelectedValue] = useState('');
   const [selectedExp, setSelectedExp] = useState('');
   const theme = useTheme();
   const dispatch = useDispatch()
-  const [locationType, setLocationType] = React.useState([]);
+  const [locationType, setLocationType] = useState([]);
 
   const handleSearch = () => {
     onSearch(searchTerm);
@@ -73,15 +74,20 @@ export default function SearchBar({ onSearch }) {
         dispatch(salarySearch(selectedValue))
         dispatch(noOfExpirence(selectedExp))
         dispatch(LocationTypes(locationType))
+        dispatch(searchCompany(searchComapanyTerm))
     }, 500);
     return()=>{
         clearTimeout(time)
     }
 
-  }, [searchTerm,selectedValue,selectedExp,locationType])
+  }, [searchTerm,selectedValue,selectedExp,locationType,searchComapanyTerm])
 
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
+  };
+
+  const handleChangeCompany = (event) => {
+    setSearchComapanyTerm(event.target.value);
   };
 
   
@@ -114,6 +120,14 @@ export default function SearchBar({ onSearch }) {
 
   return (
     <div className={classes.root} columns={{ xs: 4, sm: 8, md: 12 }}>
+      <TextField
+        className={classes.textField}
+        variant="outlined"
+        label="Search Company"
+        value={searchComapanyTerm}
+        onChange={handleChangeCompany}
+        onKeyPress={handleKeyPress}
+      />
       <TextField
         className={classes.textField}
         variant="outlined"
@@ -195,7 +209,6 @@ export default function SearchBar({ onSearch }) {
             <MenuItem
               key={name}
               value={name}
-            //   style={getStyles(name, personName, theme)}
             >
               {name}
             </MenuItem>
