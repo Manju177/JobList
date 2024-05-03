@@ -1,11 +1,34 @@
 // JobDetails.js
 import React from 'react';
 import { Typography, Container, Grid } from '@material-ui/core';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const JobDetails = () => {
+
+  const {jdList}=useSelector((state)=>state.SearchItems.payloadData)
+  const navigate=useNavigate()
+  const {id}=useParams()
+
+  console.log('id',id)
+
+  console.log('reduxstorejobs',jdList)
+
+  const handleCLick=()=>{
+    navigate('/')
+  }
+
+  const getCompanyDetails=jdList?.filter((job)=>{
+    return(
+      job.jdUid===id
+    )
+  })
+
+  console.log('getCompanyDetails',getCompanyDetails)
+
   return (
     <Container>
-      <Typography variant="h4" gutterBottom>
+      <Typography variant="h4" gutterBottom onClick={handleCLick}>
         BusinessOnBot
       </Typography>
       <Grid container spacing={3}>

@@ -35,9 +35,9 @@ const useStyles = makeStyles((theme) => ({
     BtnStyle: {
         width: '100%',
         backgroundColor: 'rgb(85, 239, 196)',
-        color:'black',
-        fontWeight:'bold',
-        textTransform:'capitalize'
+        color: 'black',
+        fontWeight: 'bold',
+        textTransform: 'capitalize'
     },
     mask: {
         maskImage: 'linear-gradient(rgb(255, 255, 255), rgb(255, 255, 255), rgba(255, 255, 255, 0))',
@@ -55,18 +55,24 @@ const useStyles = makeStyles((theme) => ({
         height: '3rem',
         margin: 'auto',
         display: 'flex'
+    },
+    cardHeader:{
+        display: 'flex',
+        alignItems: 'center',
+        margin: 'auto',
+        padding: '1rem'
     }
 }));
 
 export default function JobList() {
-    const roles = useSelector((state)=>state.SearchItems)
+    const roles = useSelector((state) => state.SearchItems)
     const classes = useStyles();
     const [jobs, setJobs] = useState([]);
     const [loading, setLoading] = useState(false)
-    const navigate=useNavigate()
-    const dispatch=useDispatch()
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
 
-    console.log('roles',roles.locType)
+    console.log('roles', roles.locType)
 
     //Api call
     useEffect(() => {
@@ -96,7 +102,7 @@ export default function JobList() {
                 dispatch(apiData(result))
                 console.log('result', result);
                 setJobs(result.jdList);
-                setLoading(false) 
+                setLoading(false)
             } catch (error) {
                 console.error(error);
                 setLoading(false)
@@ -107,41 +113,47 @@ export default function JobList() {
     }, []);
 
     console.log('jobs', jobs)
-    const filteredJobs = (roles.role || roles.salary || roles.expirence || roles.locType.length!==0)
-    ? jobs.filter(job => {
-          return (
-              job.jobRole?.toLowerCase().includes(roles.role.toLowerCase()) && 
-              (job.minJdSalary>=Number(roles.salary)&& true) 
-              &&
-              (job.minExp>=Number(roles.expirence) && true )
-          );
-      })
-    : jobs;
- 
+    const filteredJobs = (roles.role || roles.salary || roles.expirence || roles.locType.length !== 0)
+        ? jobs.filter(job => {
+            return (
+                job.jobRole?.toLowerCase().includes(roles.role.toLowerCase()) &&
+                (job.minJdSalary >= Number(roles.salary) && true)
+                &&
+                (job.minExp >= Number(roles.expirence) && true)
+            );
+        })
+        : jobs;
+
     console.log('jobs', filteredJobs)
 
 
     const handleClick = (index) => {
-        console.log('index',index)
-        navigate(`/jobDetail/:${index}`);
-      };
+        console.log('index', index)
+        navigate(`/jobDetail/${index}`);
+    };
 
 
     return (
-        <> 
-        <SearchBar/>
-        {/* loader untill api call completes */}
+        <>
+            <SearchBar />
+            {/* loader untill api call completes */}
             {loading && <AiOutlineLoading3Quarters className={classes.loader} />}
-            {!loading&&filteredJobs.length==0 && <img src='/noItems.jpg' alt='NO ITEMS FOUND' style={{ width: "-webkit-fill-available" }} />}
+            {!loading && filteredJobs.length == 0 && <img src='/noItems.jpg' alt='NO ITEMS FOUND' style={{ width: "-webkit-fill-available" }} />}
             <div className={classes.alignMent}>
                 {/* we can also create separate component for the cards */}
                 {filteredJobs.map((job, index) => (
                     <Card key={index} className={classes.root}>
+                        <div className={classes.cardHeader}>
+                        <img style={{width:'3rem', height:"2rem"}} src={job.logoUrl} alt='logo'/>
                         <CardHeader
-                            title={job.jobRole.toUpperCase()}
-                            subheader={`Location: ${job.location}`}
+                            title={job.companyName}
+                            subheader= {job.jobRole.toUpperCase()}
                         />
+                        </div>
                         <CardContent>
+                            <Typography variant="body2" color="textSecondary" component="p">
+                               {`Location: ${job.location}`}
+                            </Typography>
                             <Typography variant="body2" color="textSecondary" component="p">
                                 <strong>Minimum Experience:</strong> {job.minExp} years
                             </Typography>
@@ -165,7 +177,7 @@ export default function JobList() {
                                 {job.jobDetailsFromCompany}
                             </Typography>
                             <div className={classes.viewJob}>
-                                <h4 onClick={()=>handleClick(job.jdUid)}>View job</h4>
+                                <h4 onClick={() => handleClick(job.jdUid)}>View job</h4>
                             </div>
                             <Button className={classes.BtnStyle}  >⚡ Easy Apply</Button>
                         </CardContent>
