@@ -5,7 +5,8 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import { Box, Chip, FormControl, InputLabel } from '@material-ui/core';
-import { LocationTypes, roleSearch, salarySearch } from '../../Redux/SearchSlice';
+import { LocationTypes, noOfExpirence, roleSearch, salarySearch } from '../../Redux/SearchSlice';
+import { useDispatch } from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -58,6 +59,7 @@ export default function SearchBar({ onSearch }) {
   const [selectedValue, setSelectedValue] = useState('');
   const [selectedExp, setSelectedExp] = useState('');
   const theme = useTheme();
+  const dispatch = useDispatch()
   const [locationType, setLocationType] = React.useState([]);
 
   const handleSearch = () => {

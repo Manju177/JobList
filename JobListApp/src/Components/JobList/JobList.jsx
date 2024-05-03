@@ -7,6 +7,9 @@ import Typography from '@material-ui/core/Typography';
 import { Button } from '@material-ui/core';
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import SearchBar from './SearchBar';
+import { useSelector } from 'react-redux';
+import OfflineBoltIcon from '@material-ui/icons/OfflineBolt';
+import OfflineBoltOutlinedIcon from '@material-ui/icons/OfflineBoltOutlined';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -29,7 +32,10 @@ const useStyles = makeStyles((theme) => ({
     },
     BtnStyle: {
         width: '100%',
-        backgroundColor: '#8a96ed'
+        backgroundColor: 'rgb(85, 239, 196)',
+        color:'black',
+        fontWeight:'bold',
+        textTransform:'capitalize'
     },
     mask: {
         maskImage: 'linear-gradient(rgb(255, 255, 255), rgb(255, 255, 255), rgba(255, 255, 255, 0))',
@@ -51,9 +57,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function JobList() {
+    const roles = useSelector((state)=>state.SearchItems)
     const classes = useStyles();
     const [jobs, setJobs] = useState([]);
     const [loading, setLoading] = useState(false)
+
+    console.log('roles',roles.locType)
 
     //Api call
     useEffect(() => {
@@ -93,6 +102,19 @@ export default function JobList() {
     }, []);
 
     console.log('jobs', jobs)
+    const filteredJobs = (roles.role || roles.salary || roles.expirence || roles.locType.length!==0)
+    ? jobs.filter(job => {
+          return (
+              job.jobRole?.toLowerCase().includes(roles.role.toLowerCase()) && 
+              (job.minJdSalary>=Number(roles.salary)&& true) 
+              &&
+              (job.minExp>=Number(roles.expirence) && true )
+          );
+      })
+    : jobs;
+ 
+    console.log('jobs', filteredJobs)
+
 
     return (
         <> 
@@ -101,7 +123,7 @@ export default function JobList() {
             {loading && <AiOutlineLoading3Quarters className={classes.loader} />}
             <div className={classes.alignMent}>
                 {/* we can also create separate component for the cards */}
-                {jobs.map((job, index) => (
+                {filteredJobs.map((job, index) => (
                     <Card key={index} className={classes.root}>
                         <CardHeader
                             title={job.jobRole.toUpperCase()}
@@ -133,7 +155,7 @@ export default function JobList() {
                             <div className={classes.viewJob}>
                                 <a href="https://jobs.weekday.works/ema-software-productivity-engineer-e900?candidateId=U2FsdGVkX19Bil43L5EIhohpLlOB4FVy9eD/JqewmSJzEYIssZXHJIYUTakOyM38tX6CI7NE4R6tVgiYK13+Fw==">View job</a>
                             </div>
-                            <Button className={classes.BtnStyle} variant="contained">Easy Apply</Button>
+                            <Button className={classes.BtnStyle} variant="contained">⚡ Easy Apply</Button>
                         </CardContent>
                     </Card>
                 ))}
