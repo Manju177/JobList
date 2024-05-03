@@ -7,9 +7,11 @@ import Typography from '@material-ui/core/Typography';
 import { Button } from '@material-ui/core';
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import SearchBar from './SearchBar';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import OfflineBoltIcon from '@material-ui/icons/OfflineBolt';
 import OfflineBoltOutlinedIcon from '@material-ui/icons/OfflineBoltOutlined';
+import { useNavigate } from 'react-router-dom';
+import { apiData } from '../../Redux/SearchSlice';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -61,6 +63,8 @@ export default function JobList() {
     const classes = useStyles();
     const [jobs, setJobs] = useState([]);
     const [loading, setLoading] = useState(false)
+    const navigate=useNavigate()
+    const dispatch=useDispatch()
 
     console.log('roles',roles.locType)
 
@@ -89,6 +93,7 @@ export default function JobList() {
                     requestOptions
                 );
                 const result = await response.json();
+                dispatch(apiData(result))
                 console.log('result', result);
                 setJobs(result.jdList);
                 setLoading(false) 
@@ -114,6 +119,12 @@ export default function JobList() {
     : jobs;
  
     console.log('jobs', filteredJobs)
+
+
+    const handleClick = (index) => {
+        console.log('index',index)
+        navigate(`/jobDetail/:${index}`);
+      };
 
 
     return (
@@ -154,9 +165,9 @@ export default function JobList() {
                                 {job.jobDetailsFromCompany}
                             </Typography>
                             <div className={classes.viewJob}>
-                                <a href="https://jobs.weekday.works/ema-software-productivity-engineer-e900?candidateId=U2FsdGVkX19Bil43L5EIhohpLlOB4FVy9eD/JqewmSJzEYIssZXHJIYUTakOyM38tX6CI7NE4R6tVgiYK13+Fw==">View job</a>
+                                <h4 onClick={()=>handleClick(job.jdUid)}>View job</h4>
                             </div>
-                            <Button className={classes.BtnStyle} variant="contained">⚡ Easy Apply</Button>
+                            <Button className={classes.BtnStyle}  >⚡ Easy Apply</Button>
                         </CardContent>
                     </Card>
                 ))}
