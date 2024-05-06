@@ -188,7 +188,7 @@ export default function SearchBar({ onSearch }) {
       </Box>
       <Box sx={{ m: 1, minWidth: 120 }}>
       <FormControl fullWidth className={classes.multiselect} sx={{ m: 1, Width:300, }}>
-        <InputLabel id="demo-multiple-name-label">Name</InputLabel>
+        <InputLabel id="demo-multiple-name-label">Location Type</InputLabel>
         <Select
           labelId="demo-multiple-chip-label"
           id="demo-multiple-chip"
